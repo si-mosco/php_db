@@ -6,10 +6,71 @@ require "credenziali.php"; //per tenere le credenziali di connessione al databas
 if (isset($_SESSION["UTENTE"])) {
     echo "<html>
         <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                }
+                h1 {
+                    text-align: center;
+                }
+                table {
+                    width: 80%;
+                    margin: auto;
+                    border-collapse: collapse;
+                }
+                th, td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }
+
+                th {
+                    background-color: #4caf50;
+                    color: white;
+                }
+
+                tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+                footer {
+                    background-color: #333;
+                    color: #fff;
+                    padding: 10px;
+                    text-align: center;
+                    position: fixed;
+                    bottom: 0;
+                    width: 100%;
+                }
+                button {
+                    padding: 10px 20px;
+                    margin: 0 10px;
+                    background-color: #4CAF50;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                button:hover {
+                    background-color: #45a049;
+                }
+                form {
+                    margin-top: 20px;
+                    text-align: center;
+                }
+                label {
+                    font-weight: bold;
+                    margin-right: 10px;
+                }
+                select {
+                    padding: 8px;
+                }
+            </style>
         </head>
         <body>";
 
-    echo "Benvenuto negli Oggetti " . $_SESSION["UTENTE"];
+    echo "<h1>Benvenuto negli Oggetti " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
