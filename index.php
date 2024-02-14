@@ -1,0 +1,3 @@
+<?php  // tag php 
+phpinfo(); 
+?> 
