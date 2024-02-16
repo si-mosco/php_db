@@ -180,6 +180,9 @@ if (isset($_SESSION["UTENTE"])) {
             // Messaggio se la query non ha prodotto risultati
             echo "Nessun risultato trovato";
         }
+
+        echo "<button onclick='redirectToPage(\"aggiungi_luogo.php\")'>Aggiungi nuovo luogo</button>";
+
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     } finally {

@@ -181,6 +181,8 @@ if (isset($_SESSION["UTENTE"])) {
         $conn = null;
     }
 
+    echo "<button onclick='redirectToPage(\"aggiungi_ordineoggetto.php\")'>Aggiungi nuovo ordine</button>";
+
     echo "</body>
         </html>";
 } else {

@@ -174,6 +174,9 @@ if (isset($_SESSION["UTENTE"])) {
             // Nessun risultato trovato
             echo "Nessun risultato trovato";
         }
+
+        echo "<button onclick='redirectToPage(\"aggiungi_oggetto.php\")'>Aggiungi nuovo oggetto</button>";
+
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     } finally {
