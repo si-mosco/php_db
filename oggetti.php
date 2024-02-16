@@ -75,6 +75,8 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<footer>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
         <button onclick='redirectToPage(\"ordini.php\")'>Visualizza negli Ordini</button>
+        <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
+        <button onclick='redirectToPage(\"oggetti_ordini.php\")'>Visualizza gli Oggetti nei Ordini</button>
       </footer><br>";
 
     try {
@@ -127,7 +129,7 @@ if (isset($_SESSION["UTENTE"])) {
 
             // Form per il filtro
             echo "<form method='POST'>
-                    <label for='my_html_select_box'>FILTRA PER:</label>    
+                    <label for='my_html_select_box'>FILTRA PER:</label>
                     <select name='my_html_select_box'>
                         <option>Id: Crescente</option>
                         <option>Id: Decrescente</option>

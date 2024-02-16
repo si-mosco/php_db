@@ -70,12 +70,12 @@ if (isset($_SESSION["UTENTE"])) {
         </head>
         <body>";
 
-    echo "<h1>Benvenuto negli Ordini " . $_SESSION["UTENTE"]. "</h1>";
+    echo "<h1>Benvenuto nei Luoghi " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza negli Oggetti</button>
-        <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
+        <button onclick='redirectToPage(\"ordini.php\")'>Visualizza gli Ordini</button>
         <button onclick='redirectToPage(\"oggetti_ordini.php\")'>Visualizza gli Oggetti nei Ordini</button>
       </footer><br>";
 
