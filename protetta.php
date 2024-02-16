@@ -8,68 +8,75 @@ if (isset($_SESSION["UTENTE"])) {
     // css per presentazione più belina
     echo "<html>
         <head>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    margin-bottom: 70px;
-                }
-                h1 {
-                    text-align: center;
-                }
-                table {
-                    width: 80%;
-                    margin: auto;
-                    border-collapse: collapse;
-                }
-                th, td {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    text-align: left;
-                }
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 70px;
+            background-color: #222;
+            color: #ddd;
+        }
+        h1 {
+            text-align: center;
+            color: #4B0082; /* Indaco */
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: #333;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: #ddd;
+        }
 
-                th {
-                    background-color: #4caf50;
-                    color: white;
-                }
+        th {
+            background-color: #4B0082; /* Indaco */
+            color: #ddd;
+        }
 
-                tr:nth-child(even) {
-                    background-color: #f2f2f2;
-                }
-                footer {
-                    background-color: #333;
-                    color: #fff;
-                    padding: 10px;
-                    text-align: center;
-                    position: fixed;
-                    bottom: 0;
-                    width: 100%;
-                }
-                button {
-                    padding: 10px 20px;
-                    margin: 0 10px;
-                    background-color: #4CAF50;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-                button:hover {
-                    background-color: #45a049;
-                }
-                form {
-                    margin-top: 20px;
-                    text-align: center;
-                }
-                label {
-                    font-weight: bold;
-                    margin-right: 10px;
-                }
-                select {
-                    padding: 8px;
-                }
-            </style>
+        tr:nth-child(even) {
+            background-color: #444;
+        }
+        footer {
+            background-color: #111;
+            color: #ddd;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4B0082; /* Indaco */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6A5ACD; /* Lavanda scuro */
+        }
+        form {
+            margin-top: 20px;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #ddd;
+        }
+        select, input {
+            padding: 8px;
+            margin-right: 10px;
+        }
+    </style>
         </head>
         <body>";
 
@@ -97,25 +104,37 @@ if (isset($_SESSION["UTENTE"])) {
             echo "<script>window.location.reload();</script>";
         }
 
-        // Query che stampa tutti i clienti (query principale)
+        // Query principale per i clienti
         $sql = 'SELECT c.id, c.nome, c.cognome, c.email, l.citta, l.via, l.num_civico FROM clienti c INNER JOIN luoghi_consegna l ON c.id_luogo = l.id';
 
-        // Verifica se l'utente ha selezionato un filtro per il prezzo
-        if (isset($_POST['my_html_select_box']) && isset($_POST['select_nomi'])) {
-            $filtroId = $_POST['my_html_select_box'];
-            $filtroNomi = $_POST['select_nomi'];
-        
-            // Aggiungi la condizione WHERE per il filtro dei nomi
-            $sql .= " WHERE nome LIKE '%" . $filtroNomi . "%'";
-        
-            // Modifica la query in base alla selezione dell'utente
-            if ($filtroId === 'ID: Crescente') {
-                $sql .= ' ORDER BY id ASC';
-            } elseif ($filtroId === 'ID: Decrescente') {
-                $sql .= ' ORDER BY id DESC';
-            }
+        // Condizioni iniziali per i filtri
+        $filtroCognome = isset($_POST['cognome_select_box']) ? $_POST['cognome_select_box'] : '';
+        $filtroNome = isset($_POST['nome_select_box']) ? $_POST['nome_select_box'] : '';
+        $filtroId = isset($_POST['id_select_box']) ? $_POST['id_select_box'] : '';
+
+        // Applica i filtri solo se sono stati impostati
+        $whereClause = "";
+        if (!empty($filtroCognome)) {
+            $whereClause .= "c.cognome LIKE '%" . $filtroCognome . "%' AND ";
+        }
+        if (!empty($filtroNome)) {
+            $whereClause .= "c.nome LIKE '%" . $filtroNome . "%' AND ";
         }
 
+        // Rimuove l'eventuale "AND" finale dalla condizione WHERE
+        if (!empty($whereClause)) {
+            $whereClause = rtrim($whereClause, " AND ");
+            $sql .= " WHERE " . $whereClause;
+        }
+
+        // Modifica la query in base alla selezione dell'utente per l'ordinamento
+        if ($filtroId === 'ID: Crescente') {
+            $sql .= ' ORDER BY c.id ASC';
+        } elseif ($filtroId === 'ID: Decrescente') {
+            $sql .= ' ORDER BY c.id DESC';
+        }
+
+        // Esegui la query
         $statement = $conn->query($sql);
 
         if ($statement->rowCount() > 0) {
@@ -129,6 +148,7 @@ if (isset($_SESSION["UTENTE"])) {
                         <th>Luogo</th>
                     </tr>";
 
+            // Itera sui risultati e stampa le righe della tabella
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>
                         <td>{$row['id']}</td>
@@ -141,41 +161,22 @@ if (isset($_SESSION["UTENTE"])) {
 
             echo "</table>";
 
-            // Form per il filtro
-            
-            echo"<form method='POST'>";
-            //echo "<form method='POST'>
-             echo"<label for='my_html_select_box'>FILTRA PER ID: </label>    
-                    <select name='my_html_select_box'>
+            // Form per i filtri
+            echo "<form method='POST'>
+                    <label for='id_select_box'>FILTRA PER ID:</label>    
+                    <select name='id_select_box'>
                         <option>ID: Crescente</option>
                         <option>ID: Decrescente</option>
-                    </select>
-                    <button type='submit'>Filtra</button><br><br>";
+                    </select><br><br>
 
+                    <label for='cognome_select_box'>FILTRA PER COGNOME:</label>
+                    <input type='text' name='cognome_select_box'><br><br>
 
-            try{
-                $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                
+                    <label for='nome_select_box'>FILTRA PER NOME:</label>
+                    <input type='text' name='nome_select_box'><br><br>
 
-
-                $queryvenditori = 'SELECT DISTINCT nome FROM clienti';
-                $statementforn = $conn->prepare($queryvenditori);
-                $statementforn->execute();
-                $nomi = $statementforn->fetchAll();
-
-                echo'<label>FILTRA PER nome: </label>';
-                echo '<select name="select_nomi">';
-                echo' <option> </option>';
-                foreach ($nomi as $nome) {
-                    echo'  <option>' . $nome['nome'] . '</option>';
-                }
-                echo '</select>';
-                
-                echo"</form>"; //fine form filtri nomi
-                
-            } catch (PDOException $e) {echo "Connection failed: " . $e->getMessage();}
-
+                    <button type='submit'>Filtra</button>
+                </form>";
 
         } else {
             // Messaggio se la query non ha prodotto risultati

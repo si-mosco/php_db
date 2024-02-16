@@ -6,68 +6,75 @@ require "credenziali.php"; //per tenere le credenziali di connessione al databas
 if (isset($_SESSION["UTENTE"])) {
     echo "<html>
         <head>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    margin-bottom: 70px;
-                }
-                h1 {
-                    text-align: center;
-                }
-                table {
-                    width: 80%;
-                    margin: auto;
-                    border-collapse: collapse;
-                }
-                th, td {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    text-align: left;
-                }
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 70px;
+            background-color: #222;
+            color: #ddd;
+        }
+        h1 {
+            text-align: center;
+            color: #4B0082; /* Indaco */
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: #333;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: #ddd;
+        }
 
-                th {
-                    background-color: #4caf50;
-                    color: white;
-                }
+        th {
+            background-color: #4B0082; /* Indaco */
+            color: #ddd;
+        }
 
-                tr:nth-child(even) {
-                    background-color: #f2f2f2;
-                }
-                footer {
-                    background-color: #333;
-                    color: #fff;
-                    padding: 10px;
-                    text-align: center;
-                    position: fixed;
-                    bottom: 0;
-                    width: 100%;
-                }
-                button {
-                    padding: 10px 20px;
-                    margin: 0 10px;
-                    background-color: #4CAF50;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                }
-                button:hover {
-                    background-color: #45a049;
-                }
-                form {
-                    margin-top: 20px;
-                    text-align: center;
-                }
-                label {
-                    font-weight: bold;
-                    margin-right: 10px;
-                }
-                select {
-                    padding: 8px;
-                }
-            </style>
+        tr:nth-child(even) {
+            background-color: #444;
+        }
+        footer {
+            background-color: #111;
+            color: #ddd;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4B0082; /* Indaco */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6A5ACD; /* Lavanda scuro */
+        }
+        form {
+            margin-top: 20px;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #ddd;
+        }
+        select, input {
+            padding: 8px;
+            margin-right: 10px;
+        }
+    </style>
         </head>
         <body>";
 
@@ -95,19 +102,36 @@ if (isset($_SESSION["UTENTE"])) {
         // Query che stampa tutti gli ordini o ordina per ID
         $sql = 'SELECT o.id, CONCAT(c.nome, " ", c.cognome) AS cliente, o.data_ordine FROM ordini o INNER JOIN clienti c ON o.cliente_id = c.id';
 
-        // Verifica se l'utente ha selezionato un filtro
-        if (isset($_POST['my_html_select_box'])) {
-            $filtro = $_POST['my_html_select_box'];
+        // Applica i filtri se sono stati impostati
+        $whereClause = '';
+        $parameters = [];
+        if (!empty($_POST['cliente'])) {
+            $whereClause .= 'AND CONCAT(c.nome, " ", c.cognome) LIKE ? ';
+            $parameters[] = '%' . $_POST['cliente'] . '%';
+        }
+        if (!empty($_POST['data'])) {
+            $whereClause .= 'AND DATE(o.data_ordine) = ? ';
+            $parameters[] = $_POST['data'];
+        }
 
-            // Modifica la query in base alla selezione dell'utente
-            if ($filtro === 'Id: Crescente') {
-                $sql .= ' ORDER BY id ASC';
-            } elseif ($filtro === 'Id: Decrescente') {
-                $sql .= ' ORDER BY id DESC';
+        // Costruisci la query finale
+        if (!empty($whereClause)) {
+            $sql .= ' WHERE ' . ltrim($whereClause, 'AND ');
+        }
+
+        // Verifica se l'utente ha selezionato un filtro per l'ordinamento
+        if (isset($_POST['ordine'])) {
+            $ordinamento = $_POST['ordine'];
+
+            if ($ordinamento === 'Id: Crescente') {
+                $sql .= ' ORDER BY o.id ASC';
+            } elseif ($ordinamento === 'Id: Decrescente') {
+                $sql .= ' ORDER BY o.id DESC';
             }
         }
 
-        $statement = $conn->query($sql);
+        $statement = $conn->prepare($sql);
+        $statement->execute($parameters);
 
         if ($statement->rowCount() > 0) {
             // Tabella HTML
@@ -128,18 +152,25 @@ if (isset($_SESSION["UTENTE"])) {
 
             echo "</table>";
 
-            // Form per il filtro
+            // Form per i filtri
             echo "<form method='POST'>
-                    <label for='my_html_select_box'>FILTRA PER:</label>    
-                    <select name='my_html_select_box'>
+            <label for='ordine'>Ordine:</label>
+                    <select name='ordine'>
                         <option>Id: Crescente</option>
                         <option>Id: Decrescente</option>
-                    </select>
+                    </select><br><br>
+
+                    <label for='cliente'>Nome Cliente:</label>
+                    <input type='text' name='cliente'><br><br>
+
+                    <label for='data'>Data:</label>
+                    <input type='date' name='data'><br><br>
+
                     <button type='submit'>Filtra</button>
                 </form>";
 
         } else {
-            // Messaggio se la query non ha prodotto risultati
+            // Nessun risultato trovato
             echo "Nessun risultato trovato";
         }
     } catch (PDOException $e) {
