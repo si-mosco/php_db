@@ -13,6 +13,7 @@ if (isset($_SESSION["UTENTE"])) {
                     font-family: Arial, sans-serif;
                     margin: 0;
                     padding: 0;
+                    margin-bottom: 70px;
                 }
                 h1 {
                     text-align: center;
@@ -97,7 +98,7 @@ if (isset($_SESSION["UTENTE"])) {
         }
 
         // Query che stampa tutti i clienti (query principale)
-        $sql = 'SELECT * FROM clienti';
+        $sql = 'SELECT c.id, c.nome, c.cognome, c.email, l.citta, l.via, l.num_civico FROM clienti c INNER JOIN luoghi_consegna l ON c.id_luogo = l.id';
 
         // Verifica se l'utente ha selezionato un filtro per il prezzo
         if (isset($_POST['my_html_select_box']) && isset($_POST['select_nomi'])) {
@@ -134,7 +135,7 @@ if (isset($_SESSION["UTENTE"])) {
                         <td>{$row['nome']}</td>
                         <td>{$row['cognome']}</td>
                         <td>{$row['email']}</td>
-                        <td>{$row['id_luogo']}</td>
+                        <td>{$row['citta']} - {$row['via']} n° {$row['num_civico']}</td>
                     </tr> ";
             }
 

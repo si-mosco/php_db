@@ -11,6 +11,7 @@ if (isset($_SESSION["UTENTE"])) {
                     font-family: Arial, sans-serif;
                     margin: 0;
                     padding: 0;
+                    margin-bottom: 70px;
                 }
                 h1 {
                     text-align: center;

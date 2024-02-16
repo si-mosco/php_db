@@ -11,6 +11,7 @@ if (isset($_SESSION["UTENTE"])) {
                     font-family: Arial, sans-serif;
                     margin: 0;
                     padding: 0;
+                    margin-bottom: 70px;
                 }
                 h1 {
                     text-align: center;
@@ -92,7 +93,7 @@ if (isset($_SESSION["UTENTE"])) {
         }
 
         // Query che stampa tutti gli ordini o ordina per ID
-        $sql = 'SELECT * FROM ordini';
+        $sql = 'SELECT o.id, CONCAT(c.nome, " ", c.cognome) AS cliente, o.data_ordine FROM ordini o INNER JOIN clienti c ON o.cliente_id = c.id';
 
         // Verifica se l'utente ha selezionato un filtro
         if (isset($_POST['my_html_select_box'])) {
@@ -120,7 +121,7 @@ if (isset($_SESSION["UTENTE"])) {
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>
                         <td>{$row['id']}</td>
-                        <td>{$row['cliente_id']}</td>
+                        <td>{$row['cliente']}</td>
                         <td>{$row['data_ordine']}</td>
                     </tr> ";
             }

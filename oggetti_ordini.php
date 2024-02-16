@@ -93,7 +93,7 @@ if (isset($_SESSION["UTENTE"])) {
         }
 
         // Query che stampa tutti gli oggetti_ordini o ordina per ID
-        $sql = 'SELECT * FROM ordini_oggetti';
+        $sql = 'SELECT oo.id, oo.id_ordini, og.nome AS nome_oggetto FROM ordini_oggetti oo INNER JOIN oggetti og ON oo.id_oggetti = og.id';
 
         // Verifica se l'utente ha selezionato un filtro
         if (isset($_POST['my_html_select_box'])) {
@@ -122,7 +122,7 @@ if (isset($_SESSION["UTENTE"])) {
                 echo "<tr>
                         <td>{$row['id']}</td>
                         <td>{$row['id_ordini']}</td>
-                        <td>{$row['id_oggetti']}</td>
+                        <td>{$row['nome_oggetto']}</td>
                     </tr> ";
             }
 
