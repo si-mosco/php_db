@@ -125,6 +125,7 @@ if (isset($_SESSION["UTENTE"])) {
                         <th>Nome</th>
                         <th>Cognome</th>
                         <th>Email</th>
+                        <th>Luogo</th>
                     </tr>";
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
@@ -133,6 +134,7 @@ if (isset($_SESSION["UTENTE"])) {
                         <td>{$row['nome']}</td>
                         <td>{$row['cognome']}</td>
                         <td>{$row['email']}</td>
+                        <td>{$row['id_luogo']}</td>
                     </tr> ";
             }
 

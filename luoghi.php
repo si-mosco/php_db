@@ -91,8 +91,8 @@ if (isset($_SESSION["UTENTE"])) {
             echo "<script>window.location.reload();</script>";
         }
 
-        // Query che stampa tutti gli ordini o ordina per ID
-        $sql = 'SELECT * FROM ordini';
+        // Query che stampa tutti i luoghi o ordina per ID
+        $sql = 'SELECT * FROM luoghi_consegna';
 
         // Verifica se l'utente ha selezionato un filtro
         if (isset($_POST['my_html_select_box'])) {
@@ -113,17 +113,21 @@ if (isset($_SESSION["UTENTE"])) {
             echo "<table>
                     <tr>
                         <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Data</th>
-                        <th>Oggetto</th>
+                        <th>Nazione</th>
+                        <th>Città</th>
+                        <th>CAP</th>
+                        <th>Via</th>
+                        <th>N° Civico</th>
                     </tr>";
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>
                         <td>{$row['id']}</td>
-                        <td>{$row['cliente_id']}</td>
-                        <td>{$row['data_ordine']}</td>
-                        <td>{$row['oggetto_id']}</td>
+                        <td>{$row['nazione']}</td>
+                        <td>{$row['citta']}</td>
+                        <td>{$row['cap']}</td>
+                        <td>{$row['via']}</td>
+                        <td>{$row['num_civico']}</td>
                     </tr> ";
             }
 

@@ -11,6 +11,7 @@ if (isset($_SESSION["UTENTE"])) {
                     font-family: Arial, sans-serif;
                     margin: 0;
                     padding: 0;
+                    margin-bottom: 70px;
                 }
                 h1 {
                     text-align: center;
@@ -91,8 +92,8 @@ if (isset($_SESSION["UTENTE"])) {
             echo "<script>window.location.reload();</script>";
         }
 
-        // Query che stampa tutti gli ordini o ordina per ID
-        $sql = 'SELECT * FROM ordini';
+        // Query che stampa tutti gli oggetti_ordini o ordina per ID
+        $sql = 'SELECT * FROM ordini_oggetti';
 
         // Verifica se l'utente ha selezionato un filtro
         if (isset($_POST['my_html_select_box'])) {
@@ -113,17 +114,15 @@ if (isset($_SESSION["UTENTE"])) {
             echo "<table>
                     <tr>
                         <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Data</th>
+                        <th>Ordine</th>
                         <th>Oggetto</th>
                     </tr>";
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>
                         <td>{$row['id']}</td>
-                        <td>{$row['cliente_id']}</td>
-                        <td>{$row['data_ordine']}</td>
-                        <td>{$row['oggetto_id']}</td>
+                        <td>{$row['id_ordini']}</td>
+                        <td>{$row['id_oggetti']}</td>
                     </tr> ";
             }
 

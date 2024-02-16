@@ -115,7 +115,6 @@ if (isset($_SESSION["UTENTE"])) {
                         <th>ID</th>
                         <th>Cliente</th>
                         <th>Data</th>
-                        <th>Oggetto</th>
                     </tr>";
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
@@ -123,7 +122,6 @@ if (isset($_SESSION["UTENTE"])) {
                         <td>{$row['id']}</td>
                         <td>{$row['cliente_id']}</td>
                         <td>{$row['data_ordine']}</td>
-                        <td>{$row['oggetto_id']}</td>
                     </tr> ";
             }
 
