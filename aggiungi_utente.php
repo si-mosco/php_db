@@ -93,6 +93,15 @@ try {
             echo "<p>Nuovo cliente aggiunto con successo!</p>";
             // Reindirizza alla pagina principale dopo l'aggiunta
             echo "<script>window.location.href = 'protetta.php';</script>";
+        } else if (!empty($_POST['id_elimina'])) {
+            $id_elimina = $_POST['id_elimina'];
+
+            $sqlDelete = "DELETE FROM clienti WHERE id = :id";
+            $stmt = $conn->prepare($sqlDelete);
+            $stmt->bindParam(':id', $id_elimina);
+            $stmt->execute();
+
+            echo "<p>Cliente eliminato con successo!</p>";
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 
@@ -128,13 +137,28 @@ try {
                 
                 <button onclick='goToHomePage()'>Torna alla pagina principale</button>
             </div>";
-        
+
+    echo "<div>
+            <h1>Elimina Cliente</h1>
+            <form method='POST'>
+                <label for='id_elimina'>Seleziona ID del cliente da eliminare:</label>
+                <select name='id_elimina' id='id_elimina'>";
+    $sqlSelect = "SELECT id, nome, cognome FROM clienti";
+    $stmt = $conn->query($sqlSelect);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['nome'] . " " . $row['cognome'] . "</option>";
+    }
+    echo "</select><br><br>
+                <button type='submit'>Elimina Cliente</button>
+            </form>
+        </div>";
+
     // JavaScript per reindirizzare alla pagina principale
     echo "<script>
             function goToHomePage() {
-            window.location.href = 'protetta.php';
-        }
-        </script>";
+                window.location.href = 'protetta.php';
+            }
+          </script>";
 
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

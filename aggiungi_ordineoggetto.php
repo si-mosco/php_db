@@ -91,6 +91,15 @@ try {
             echo "<p>Ordine oggetto aggiunto con successo!</p>";
             // Reindirizza alla pagina principale dopo l'aggiunta
             echo "<script>window.location.href = 'oggetti_ordini.php';</script>";
+        } else if (!empty($_POST['id_elimina'])) {
+            $id_elimina = $_POST['id_elimina'];
+
+            $sqlDelete = "DELETE FROM ordini_oggetti WHERE id = :id";
+            $stmt = $conn->prepare($sqlDelete);
+            $stmt->bindParam(':id', $id_elimina);
+            $stmt->execute();
+
+            echo "<p>Ordine oggetto eliminato con successo!</p>";
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 
@@ -127,13 +136,28 @@ echo "</select><br><br>
                 </form>
                 <button onclick='goToHomePage()'>Torna alla pagina principale</button>
                 </div>";
-            
-        // JavaScript per reindirizzare alla pagina principale
-        echo "<script>
-                function goToHomePage() {
+
+    echo "<div>
+            <h1>Elimina Ordine Oggetto</h1>
+            <form method='POST'>
+                <label for='id_elimina'>Seleziona ID dell'ordine oggetto da eliminare:</label>
+                <select name='id_elimina' id='id_elimina'>";
+    $sqlSelect = "SELECT id, id_ordini, id_oggetti FROM ordini_oggetti";
+    $stmt = $conn->query($sqlSelect);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - ID Ordine: " . $row['id_ordini'] . ", ID Oggetto: " . $row['id_oggetti'] . "</option>";
+    }
+    echo "</select><br><br>
+                <button type='submit'>Elimina Ordine Oggetto</button>
+            </form>
+        </div>";
+
+    // JavaScript per reindirizzare alla pagina principale
+    echo "<script>
+            function goToHomePage() {
                 window.location.href = 'oggetti_ordini.php';
             }
-            </script>";
+          </script>";
 
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

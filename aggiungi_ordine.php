@@ -104,6 +104,15 @@ try {
             echo "<p>Nuovo ordine aggiunto con successo!</p>";
             // Reindirizza alla pagina principale dopo l'aggiunta
             echo "<script>window.location.href = 'ordini.php';</script>";
+        } else if (!empty($_POST['id_elimina'])) {
+            $id_elimina = $_POST['id_elimina'];
+
+            $sqlDelete = "DELETE FROM ordini WHERE id = :id";
+            $stmt = $conn->prepare($sqlDelete);
+            $stmt->bindParam(':id', $id_elimina);
+            $stmt->execute();
+
+            echo "<p>Ordine eliminato con successo!</p>";
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 
@@ -137,14 +146,27 @@ echo "</select><br><br>
         <button onclick='goToHomePage()'>Torna alla pagina principale</button>
     </div>";
 
-// JavaScript per reindirizzare alla pagina principale
-echo "<script>
-        function goToHomePage() {
-            window.location.href = 'ordini.php';
-        }
-      </script>";
+    echo "<div>
+            <h1>Elimina Ordine</h1>
+            <form method='POST'>
+                <label for='id_elimina'>Seleziona ID dell'ordine da eliminare:</label>
+                <select name='id_elimina' id='id_elimina'>";
+    $sqlSelect = "SELECT id, data_ordine FROM ordini";
+    $stmt = $conn->query($sqlSelect);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['data_ordine'] . "</option>";
+    }
+    echo "</select><br><br>
+                <button type='submit'>Elimina Ordine</button>
+            </form>
+        </div>";
 
-
+    // JavaScript per reindirizzare alla pagina principale
+    echo "<script>
+            function goToHomePage() {
+                window.location.href = 'ordini.php';
+            }
+          </script>";
 
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

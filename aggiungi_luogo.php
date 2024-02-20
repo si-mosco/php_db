@@ -99,6 +99,15 @@ try {
             $stmt->execute();
 
             echo "<p>Nuovo luogo di consegna aggiunto con successo!</p>";
+        } else if (!empty($_POST['id_elimina'])) {
+            $id_elimina = $_POST['id_elimina'];
+
+            $sqlDelete = "DELETE FROM luoghi_consegna WHERE id = :id";
+            $stmt = $conn->prepare($sqlDelete);
+            $stmt->bindParam(':id', $id_elimina);
+            $stmt->execute();
+
+            echo "<p>Luogo di consegna eliminato con successo!</p>";
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 
@@ -127,6 +136,21 @@ try {
                 <button type='submit'>Aggiungi Luogo di Consegna</button>
             </form>
             <button onclick='goToHomePage()'>Torna alla pagina principale</button>
+        </div>";
+
+    echo "<div>
+            <h1>Elimina Luogo di Consegna</h1>
+            <form method='POST'>
+                <label for='id_elimina'>Seleziona ID del luogo di consegna da eliminare:</label>
+                <select name='id_elimina' id='id_elimina'>";
+    $sqlSelect = "SELECT id, citta, nazione FROM luoghi_consegna";
+    $stmt = $conn->query($sqlSelect);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['citta'] . ", " . $row['nazione'] . "</option>";
+    }
+    echo "</select><br><br>
+                <button type='submit'>Elimina Luogo di Consegna</button>
+            </form>
         </div>";
 
     // JavaScript per reindirizzare alla pagina principale
