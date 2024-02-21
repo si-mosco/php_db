@@ -77,7 +77,7 @@ echo "<html>
         </head>
         <body>";
 
-    echo "<footer>
+echo "<footer>
         <button onclick='goToHomePage()'>Torna alla pagina principale</button>
       </footer><br>";
 

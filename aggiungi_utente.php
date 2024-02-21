@@ -77,7 +77,7 @@ echo "<html>
         </head>
         <body>";
 
-    echo "<footer>
+echo "<footer>
         <button onclick='goToHomePage()'>Torna alla pagina principale</button>
       </footer><br>";
 
@@ -106,6 +106,36 @@ try {
             $stmt->execute();
 
             echo "<p>Cliente eliminato con successo!</p>";
+        } else if (!empty($_POST['id_modifica'])) {
+            $id_modifica = $_POST['id_modifica'];
+            $updateFields = array();
+
+            if (!empty($_POST['nome_modificato'])) {
+                $updateFields[] = "nome = :nome";
+            }
+            if (!empty($_POST['cognome_modificato'])) {
+                $updateFields[] = "cognome = :cognome";
+            }
+            if (!empty($_POST['email_modificata'])) {
+                $updateFields[] = "email = :email";
+            }
+            if (!empty($_POST['id_luogo_modificato'])) {
+                $updateFields[] = "id_luogo = :id_luogo";
+            }
+
+            if (!empty($updateFields)) {
+                $sqlUpdate = "UPDATE clienti SET " . implode(", ", $updateFields) . " WHERE id = :id";
+                $stmt = $conn->prepare($sqlUpdate);
+                foreach ($updateFields as $field) {
+                    $fieldName = substr($field, 0, strpos($field, ' '));
+                    $stmt->bindParam(':' . $fieldName, $_POST[$fieldName . '_modificato']);
+                }
+                $stmt->bindParam(':id', $id_modifica);
+                $stmt->execute();
+                echo "<p>Cliente modificato con successo!</p>";
+            } else {
+                echo "<p>Nessun campo da modificare è stato compilato.</p>";
+            }
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 
@@ -141,7 +171,7 @@ try {
             </div>";
 
     echo "<div>
-            <h1>Elimina Cliente</h1>
+            <h1>Elimina</h1>
             <form method='POST'>
                 <label for='id_elimina'>Seleziona ID del cliente da eliminare:</label>
                 <select name='id_elimina' id='id_elimina'>";
@@ -151,7 +181,36 @@ try {
         echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['nome'] . " " . $row['cognome'] . "</option>";
     }
     echo "</select><br><br>
-                <button type='submit'>Elimina Cliente</button>
+                <button type='submit' name='submit_elimina'>Elimina Cliente</button>
+            </form>
+            
+            <h1>Modifica</h1>
+            <form method='POST'>
+                <label for='id_modifica'>Seleziona ID del cliente da modificare:</label>
+                <select name='id_modifica' id='id_modifica'>";
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['nome'] . " " . $row['cognome'] . "</option>";
+    }
+    echo "</select><br><br>";
+
+    echo "<label for='nome_modificato'>Nuovo Nome:</label>
+                <input type='text' name='nome_modificato'><br><br>";
+
+    echo "<label for='cognome_modificato'>Nuovo Cognome:</label>
+                <input type='text' name='cognome_modificato'><br><br>";
+
+    echo "<label for='email_modificata'>Nuova Email:</label>
+                <input type='email' name='email_modificata'><br><br>";
+
+    echo "<label for='id_luogo_modificato'>Nuovo Luogo di Consegna:</label>
+                <select name='id_luogo_modificato'>";
+    foreach ($luoghi as $luogo) {
+        echo "<option value='{$luogo['id']}'>{$luogo['citta']}, {$luogo['nazione']}</option>";
+    }
+    echo "</select><br><br>";
+
+    echo "<button type='submit' name='submit_modifica'>Modifica Cliente</button>
             </form>
         </div>";
 
