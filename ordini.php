@@ -81,6 +81,7 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<h1>Benvenuto negli Ordini " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
+        <button onclick='redirectToPage(\"aggiungi_ordine.php\")'>Aggiungi nuovo ordine</button>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza negli Oggetti</button>
         <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
@@ -173,8 +174,6 @@ if (isset($_SESSION["UTENTE"])) {
             // Nessun risultato trovato
             echo "Nessun risultato trovato";
         }
-
-        echo "<button onclick='redirectToPage(\"aggiungi_ordine.php\")'>Aggiungi nuovo ordine</button>";
 
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();

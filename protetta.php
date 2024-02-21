@@ -83,6 +83,7 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<h1>Benvenuto nei Clienti " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
+        <button onclick='redirectToPage(\"aggiungi_utente.php\")'>Aggiungi nuovo utente</button>
         <button onclick='redirectToPage(\"ordini.php\")'>Visualizza gli Ordini</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza gli Oggetti</button>
         <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
@@ -180,9 +181,6 @@ if (isset($_SESSION["UTENTE"])) {
             // Messaggio se la query non ha prodotto risultati
             echo "Nessun risultato trovato";
         }
-
-        
-    echo "<button onclick='redirectToPage(\"aggiungi_utente.php\")'>Aggiungi nuovo utente</button>";
 
 
     } catch (PDOException $e) {

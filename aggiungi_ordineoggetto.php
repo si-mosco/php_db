@@ -77,6 +77,10 @@ echo "<html>
         </head>
         <body>";
 
+    echo "<footer>
+        <button onclick='goToHomePage()'>Torna alla pagina principale</button>
+      </footer><br>";
+
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -134,7 +138,6 @@ echo "</select><br><br>
 
                 <button type='submit'>Aggiungi Oggetto nell'Ordine</button>
                 </form>
-                <button onclick='goToHomePage()'>Torna alla pagina principale</button>
                 </div>";
 
     echo "<div>

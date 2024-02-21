@@ -81,6 +81,7 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<h1>Benvenuto negli Oggetti di ogni Ordine " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
+        <button onclick='redirectToPage(\"aggiungi_ordineoggetto.php\")'>Aggiungi nuovo oggetto nell'ordine</button>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza negli Oggetti</button>
         <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
@@ -180,8 +181,6 @@ if (isset($_SESSION["UTENTE"])) {
         // Chiudi la connessione in ogni caso
         $conn = null;
     }
-
-    echo "<button onclick='redirectToPage(\"aggiungi_ordineoggetto.php\")'>Aggiungi nuovo ordine</button>";
 
     echo "</body>
         </html>";
