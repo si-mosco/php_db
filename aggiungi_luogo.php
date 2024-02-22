@@ -102,7 +102,8 @@ try {
             $stmt->bindParam(':num_civico', $num_civico);
             $stmt->execute();
 
-            echo "<p>Nuovo luogo di consegna aggiunto con successo!</p>";
+            echo "<script type='text/javascript'>alert('Nuovo luogo di consegna aggiunto con successo!');</script>";
+                echo "<script>window.location.href = 'luoghi.php';</script>";
         } else if (!empty($_POST['id_elimina'])) {
             $id_elimina = $_POST['id_elimina'];
 
@@ -111,7 +112,43 @@ try {
             $stmt->bindParam(':id', $id_elimina);
             $stmt->execute();
 
-            echo "<p>Luogo di consegna eliminato con successo!</p>";
+            echo "<script type='text/javascript'>alert('Luogo di consegna eliminato con successo!');</script>";
+                echo "<script>window.location.href = 'luoghi.php';</script>";
+        } else if (!empty($_POST['id_modifica'])) {
+            $id_modifica = $_POST['id_modifica'];
+            $updateFields = array();
+
+            if (!empty($_POST['citta_modificato'])) {
+                $updateFields[] = "citta = :citta";
+            }
+            if (!empty($_POST['nazione_modificato'])) {
+                $updateFields[] = "nazione = :nazione";
+            }
+            if (!empty($_POST['cap_modificato'])) {
+                $updateFields[] = "cap = :cap";
+            }
+            if (!empty($_POST['via_modificato'])) {
+                $updateFields[] = "via = :via";
+            }
+            if (!empty($_POST['num_civico_modificato'])) {
+                $updateFields[] = "num_civico = :num_civico";
+            }
+
+            if (!empty($updateFields)) {
+                $sqlUpdate = "UPDATE luoghi_consegna SET " . implode(", ", $updateFields) . " WHERE id = :id";
+                $stmt = $conn->prepare($sqlUpdate);
+                foreach ($updateFields as $field) {
+                    $fieldName = substr($field, 0, strpos($field, ' '));
+                    $stmt->bindParam(':' . $fieldName, $_POST[$fieldName . '_modificato']);
+                }
+                $stmt->bindParam(':id', $id_modifica);
+                $stmt->execute();
+
+                echo "<script type='text/javascript'>alert('Luogo modificato con successo!');</script>";
+                echo "<script>window.location.href = 'luoghi.php';</script>";
+            } else {
+                echo "<p>Nessun campo da modificare è stato compilato.</p>";
+            } 
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 
@@ -153,6 +190,37 @@ try {
     }
     echo "</select><br><br>
                 <button type='submit'>Elimina Luogo di Consegna</button>
+            </form>
+        </div>";
+
+        echo "<div>
+        <h1>Modifica Luogo di Consegna</h1>
+        <form method='POST'>
+                <label for='id_modifica'>Seleziona ID del luogo di consegna da eliminare:</label>
+                <select name='id_modifica' id='id_modifica'>";
+    $sqlSelect = "SELECT id, citta, nazione FROM luoghi_consegna";
+    $stmt = $conn->query($sqlSelect);
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['citta'] . ", " . $row['nazione'] . "</option>";
+    }
+    echo "</select><br><br>";
+
+echo "<label for='citta_modificato'>Nuova Città:</label>
+<input type='text' name='citta_modificato'><br><br>
+
+<label for='nazione_modificato'>Nuova Nazione:</label>
+<input type='text' name='nazione_modificato'><br><br>
+
+<label for='cap_modificato'>Nuovo CAP:</label>
+<input type='text' name='cap_modificato'><br><br>
+
+<label for='via_modificato'>Nuova Via:</label>
+<input type='text' name='via_modificato'><br><br>
+
+<label for='num_civico_modificato'>Nuovo Numero Civico:</label>
+<input type='text' name='num_civico_modificato'><br><br>";
+
+echo "<button type='submit'>Modifica Luogo di Consegna</button>
             </form>
         </div>";
 

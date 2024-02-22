@@ -81,7 +81,7 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<h1>Benvenuto negli Ordini " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
-        <button onclick='redirectToPage(\"aggiungi_ordine.php\")'>Aggiungi nuovo ordine</button>
+        <button onclick='redirectToPage(\"aggiungi_ordine.php\")'>Gestisci ordini</button>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza negli Oggetti</button>
         <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
@@ -144,10 +144,14 @@ if (isset($_SESSION["UTENTE"])) {
                     </tr>";
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $id = $row['id'] ?? '-';
+                $cliente = $row['cliente'] ?? '-';
+                $data_ordine = $row['data_ordine'] ?? '-';
+
                 echo "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['cliente']}</td>
-                        <td>{$row['data_ordine']}</td>
+                        <td>{$id}</td>
+                        <td>{$cliente}</td>
+                        <td>{$data_ordine}</td>
                     </tr> ";
             }
 

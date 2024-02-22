@@ -92,8 +92,8 @@ try {
             $stmt->bindParam(':id_ordine', $_POST['id_ordine']);
             $stmt->bindParam(':id_oggetti', $_POST['id_oggetti']);
             $stmt->execute();
-            echo "<p>Ordine oggetto aggiunto con successo!</p>";
-            // Reindirizza alla pagina principale dopo l'aggiunta
+
+            echo "<script type='text/javascript'>alert('Ordine oggetto aggiunto con successo!');</script>";
             echo "<script>window.location.href = 'oggetti_ordini.php';</script>";
         } else if (!empty($_POST['id_elimina'])) {
             $id_elimina = $_POST['id_elimina'];
@@ -103,7 +103,8 @@ try {
             $stmt->bindParam(':id', $id_elimina);
             $stmt->execute();
 
-            echo "<p>Ordine oggetto eliminato con successo!</p>";
+            echo "<script type='text/javascript'>alert('Ordine oggetto eliminato con successo!');</script>";
+            echo "<script>window.location.href = 'oggetti_ordini.php';</script>";
         } else if (!empty($_POST['id_modifica'])) {
             $id_modifica = $_POST['id_modifica'];
             $id_ordine_modificato = $_POST['id_ordine_modifica'];
@@ -116,7 +117,8 @@ try {
             $stmt->bindParam(':id', $id_modifica);
             $stmt->execute();
 
-            echo "<p>Ordine oggetto modificato con successo!</p>";
+            echo "<script type='text/javascript'>alert('Ordine oggetto modificato con successo!');</script>";
+            echo "<script>window.location.href = 'oggetti_ordini.php';</script>";
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 

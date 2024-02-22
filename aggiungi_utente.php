@@ -94,8 +94,8 @@ try {
             $stmt->bindParam(':email', $_POST['email']);
             $stmt->bindParam(':id_luogo', $_POST['id_luogo']);
             $stmt->execute();
-            echo "<p>Nuovo cliente aggiunto con successo!</p>";
-            // Reindirizza alla pagina principale dopo l'aggiunta
+
+            echo "<script type='text/javascript'>alert('Nuovo cliente aggiunto con successo!');</script>";
             echo "<script>window.location.href = 'protetta.php';</script>";
         } else if (!empty($_POST['id_elimina'])) {
             $id_elimina = $_POST['id_elimina'];
@@ -105,7 +105,8 @@ try {
             $stmt->bindParam(':id', $id_elimina);
             $stmt->execute();
 
-            echo "<p>Cliente eliminato con successo!</p>";
+            echo "<script type='text/javascript'>alert('Cliente eliminato con successo!');</script>";
+            echo "<script>window.location.href = 'protetta.php';</script>";
         } else if (!empty($_POST['id_modifica'])) {
             $id_modifica = $_POST['id_modifica'];
             $updateFields = array();
@@ -116,9 +117,10 @@ try {
             if (!empty($_POST['cognome_modificato'])) {
                 $updateFields[] = "cognome = :cognome";
             }
-            if (!empty($_POST['email_modificata'])) {
+            if (!empty($_POST['email_modificato'])) {
                 $updateFields[] = "email = :email";
             }
+            
             if (!empty($_POST['id_luogo_modificato'])) {
                 $updateFields[] = "id_luogo = :id_luogo";
             }
@@ -132,7 +134,9 @@ try {
                 }
                 $stmt->bindParam(':id', $id_modifica);
                 $stmt->execute();
-                echo "<p>Cliente modificato con successo!</p>";
+
+                echo "<script type='text/javascript'>alert('Cliente modificato con successo!');</script>";
+            echo "<script>window.location.href = 'protetta.php';</script>";
             } else {
                 echo "<p>Nessun campo da modificare è stato compilato.</p>";
             }
@@ -200,8 +204,8 @@ try {
     echo "<label for='cognome_modificato'>Nuovo Cognome:</label>
                 <input type='text' name='cognome_modificato'><br><br>";
 
-    echo "<label for='email_modificata'>Nuova Email:</label>
-                <input type='email' name='email_modificata'><br><br>";
+    echo "<label for='email_modificato'>Nuova Email:</label>
+                <input type='email' name='email_modificato'><br><br>";
 
     echo "<label for='id_luogo_modificato'>Nuovo Luogo di Consegna:</label>
                 <select name='id_luogo_modificato'>";

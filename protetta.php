@@ -83,7 +83,7 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<h1>Benvenuto nei Clienti " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
-        <button onclick='redirectToPage(\"aggiungi_utente.php\")'>Aggiungi nuovo utente</button>
+        <button onclick='redirectToPage(\"aggiungi_utente.php\")'>Gestisci utenti</button>
         <button onclick='redirectToPage(\"ordini.php\")'>Visualizza gli Ordini</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza gli Oggetti</button>
         <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
@@ -104,7 +104,7 @@ if (isset($_SESSION["UTENTE"])) {
         }
 
         // Query principale per i clienti
-        $sql = 'SELECT c.id, c.nome, c.cognome, c.email, l.citta, l.via, l.num_civico FROM clienti c INNER JOIN luoghi_consegna l ON c.id_luogo = l.id';
+        $sql = 'SELECT c.id, c.nome, c.cognome, c.email, l.citta, l.via, l.num_civico FROM clienti c LEFT JOIN luoghi_consegna l ON c.id_luogo = l.id';
 
         // Condizioni iniziali per i filtri
         $filtroCognome = isset($_POST['cognome_select_box']) ? $_POST['cognome_select_box'] : '';
@@ -149,14 +149,29 @@ if (isset($_SESSION["UTENTE"])) {
 
             // Itera sui risultati e stampa le righe della tabella
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                // Sostituisce i valori NULL con '-'
+                $id = $row['id'] ?? '-';
+                $nome = $row['nome'] ?? '-';
+                $cognome = $row['cognome'] ?? '-';
+                $email = $row['email'] ?? '-';
+                $citta = $row['citta'] ?? '-';
+                $via = $row['via'] ?? '-';
+                $num_civico = $row['num_civico'] ?? '-';
+            
                 echo "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['nome']}</td>
-                        <td>{$row['cognome']}</td>
-                        <td>{$row['email']}</td>
-                        <td>{$row['citta']} - {$row['via']} n° {$row['num_civico']}</td>
-                    </tr> ";
+                        <td>{$id}</td>
+                        <td>{$nome}</td>
+                        <td>{$cognome}</td>
+                        <td>{$email}</td>";
+                        if ($citta != '-'){
+                            echo "<td>{$citta} - {$via} n° {$num_civico}</td>";
+                        }
+                        else{
+                            echo "<td>{$citta}</td>";
+                        }
+                        echo "</tr> ";
             }
+            
 
             echo "</table>";
 

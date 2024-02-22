@@ -81,7 +81,7 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<h1>Benvenuto nei Luoghi " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
-        <button onclick='redirectToPage(\"aggiungi_luogo.php\")'>Aggiungi nuovo luogo</button>
+        <button onclick='redirectToPage(\"aggiungi_luogo.php\")'>Gestisci luoghi</button>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza negli Oggetti</button>
         <button onclick='redirectToPage(\"ordini.php\")'>Visualizza gli Ordini</button>
@@ -148,13 +148,20 @@ if (isset($_SESSION["UTENTE"])) {
                     </tr>";
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $id = $row['id'] ?? '-';
+                $nazione = $row['nazione'] ?? '-';
+                $citta = $row['citta'] ?? '-';
+                $cap = $row['cap'] ?? '-';
+                $via = $row['via'] ?? '-';
+                $num_civico = $row['num_civico'] ?? '-';             
+                
                 echo "<tr>
-                        <td>{$row['id']}</td>
-                        <td>{$row['nazione']}</td>
-                        <td>{$row['citta']}</td>
-                        <td>{$row['cap']}</td>
-                        <td>{$row['via']}</td>
-                        <td>{$row['num_civico']}</td>
+                        <td>{$id}</td>
+                        <td>{$nazione}</td>
+                        <td>{$citta}</td>
+                        <td>{$cap}</td>
+                        <td>{$via}</td>
+                        <td>{$num_civico}</td>
                     </tr> ";
             }
 

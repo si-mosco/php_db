@@ -81,7 +81,7 @@ if (isset($_SESSION["UTENTE"])) {
     echo "<h1>Benvenuto negli Oggetti di ogni Ordine " . $_SESSION["UTENTE"]. "</h1>";
 
     echo "<footer>
-        <button onclick='redirectToPage(\"aggiungi_ordineoggetto.php\")'>Aggiungi nuovo oggetto nell'ordine</button>
+        <button onclick='redirectToPage(\"aggiungi_ordineoggetto.php\")'>Gestisci oggetti negli ordini</button>
         <button onclick='redirectToPage(\"protetta.php\")'>Visualizza i Clienti</button>
         <button onclick='redirectToPage(\"oggetti.php\")'>Visualizza negli Oggetti</button>
         <button onclick='redirectToPage(\"luoghi.php\")'>Visualizza i Luoghi</button>
@@ -145,10 +145,15 @@ if (isset($_SESSION["UTENTE"])) {
                     </tr>";
 
             while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $id = $row['id'] ?? '-';
+                $id_ordini = $row['id_ordini'] ?? '-';
+                $nome_oggetto = $row['nome_oggetto'] ?? '-';
+
+
                 echo "<tr>
                         <td>{$row['id']}</td>
-                        <td>{$row['id_ordini']}</td>
-                        <td>{$row['nome_oggetto']}</td>
+                        <td>{$id_ordini}</td>
+                        <td>{$nome_oggetto}</td>
                     </tr> ";
             }
 

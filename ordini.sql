@@ -80,7 +80,7 @@ CREATE TABLE `luoghi_consegna` (
   `id` int(11) NOT NULL,
   `citta` varchar(30) NOT NULL,
   `nazione` varchar(30) NOT NULL,
-  `cap` int(11) NOT NULL,
+  `cap` varchar(30) NOT NULL,
   `via` varchar(50) NOT NULL,
   `num_civico` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

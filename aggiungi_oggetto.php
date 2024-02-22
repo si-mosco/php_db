@@ -77,7 +77,7 @@ echo "<html>
         </head>
         <body>";
 
-    echo "<footer>
+echo "<footer>
         <button onclick='goToHomePage()'>Torna alla pagina principale</button>
       </footer><br>";
 
@@ -96,7 +96,8 @@ try {
             $stmt->bindParam(':costo', $costo);
             $stmt->execute();
 
-            echo "<p>Nuovo oggetto aggiunto con successo!</p>";
+            echo "<script type='text/javascript'>alert('Nuovo oggetto aggiunto con successo!');</script>";
+            echo "<script>window.location.href = 'oggetti.php';</script>";
         } else if (!empty($_POST['id_elimina'])) {
             $id_elimina = $_POST['id_elimina'];
 
@@ -105,7 +106,34 @@ try {
             $stmt->bindParam(':id', $id_elimina);
             $stmt->execute();
 
-            echo "<p>Oggetto eliminato con successo!</p>";
+            echo "<script type='text/javascript'>alert('Oggetto eliminato con successo!');</script>";
+            echo "<script>window.location.href = 'oggetti.php';</script>";
+        } else if (!empty($_POST['id_modifica'])) {
+            $id_modifica = $_POST['id_modifica'];
+            $updateFields = array();
+
+            if (!empty($_POST['nome_modificato'])) {
+                $updateFields[] = "nome = :nome";
+            }
+            if (!empty($_POST['costo_modificato'])) {
+                $updateFields[] = "costo = :costo";
+            }
+
+            if (!empty($updateFields)) {
+                $sqlUpdate = "UPDATE oggetti SET " . implode(", ", $updateFields) . " WHERE id = :id";
+                $stmt = $conn->prepare($sqlUpdate);
+                foreach ($updateFields as $field) {
+                    $fieldName = substr($field, 0, strpos($field, ' '));
+                    $stmt->bindParam(':' . $fieldName, $_POST[$fieldName . '_modificato']);
+                }
+                $stmt->bindParam(':id', $id_modifica);
+                $stmt->execute();
+
+                echo "<script type='text/javascript'>alert('Oggetto modificato con successo!');</script>";
+                echo "<script>window.location.href = 'oggetti.php';</script>";
+            } else {
+                echo "<script type='text/javascript'>alert('Nessun campo da modificare è stato compilato.');</script>";
+            }
         } else {
             echo '<script type="text/javascript">
             window.onload = function () { alert("Tutti i campi sono obbligatori!"); } 
@@ -138,6 +166,27 @@ try {
     }
     echo "</select><br><br>
                 <button type='submit'>Elimina Oggetto</button>
+            </form>
+        </div>";
+
+    echo "<div>
+            <h1>Modifica Oggetto</h1>
+            <form method='POST'>
+                <label for='id_modifica'>Seleziona ID dell'oggetto da modificare:</label>
+                <select name='id_modifica' id='id_modifica'>";
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['nome'] . "</option>";
+    }
+    echo "</select><br><br>";
+
+    echo "<label for='nome_modificato'>Nuovo Nome:</label>
+                <input type='text' name='nome_modificato'><br><br>";
+
+    echo "<label for='costo_modificato'>Nuovo Costo:</label>
+                <input type='number' name='costo_modificato' min='0'><br><br>";
+
+    echo "<button type='submit'>Modifica Oggetto</button>
             </form>
         </div>";
 
