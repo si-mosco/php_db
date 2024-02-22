@@ -101,7 +101,7 @@ if (isset($_SESSION["UTENTE"])) {
         }
 
         // Query che stampa tutti gli ordini o ordina per ID
-        $sql = 'SELECT o.id, CONCAT(c.nome, " ", c.cognome) AS cliente, o.data_ordine FROM ordini o INNER JOIN clienti c ON o.cliente_id = c.id';
+        $sql = 'SELECT o.id, CONCAT(c.nome, " ", c.cognome) AS cliente, o.data_ordine FROM ordini o LEFT JOIN clienti c ON o.cliente_id = c.id';
 
         // Applica i filtri se sono stati impostati
         $whereClause = '';

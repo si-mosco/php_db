@@ -101,7 +101,7 @@ if (isset($_SESSION["UTENTE"])) {
         }
 
         // Query che stampa tutti gli oggetti_ordini o ordina per ID
-        $sql = 'SELECT oo.id, oo.id_ordini, og.nome AS nome_oggetto FROM ordini_oggetti oo INNER JOIN oggetti og ON oo.id_oggetti = og.id';
+        $sql = 'SELECT oo.id, oo.id_ordini, og.nome AS nome_oggetto FROM ordini_oggetti oo LEFT JOIN oggetti og ON oo.id_oggetti = og.id';
 
         // Verifica se sono stati applicati filtri per nome dell'oggetto e ID dell'ordine
         $params = [];
