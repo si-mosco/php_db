@@ -62,9 +62,14 @@ if (isset($_SESSION["UTENTE"])) {
             background-color: #6A5ACD; /* Lavanda scuro */
         }
         form {
-            margin-top: 20px;
-            text-align: center;
-        }
+    margin: 20px auto;
+    width: 500px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
         label {
             font-weight: bold;
             margin-right: 10px;
